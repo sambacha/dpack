@@ -4,11 +4,13 @@
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
+  "files": ["dist/*"],
   "dependencies": {
     "ajv": "^6.12.6",
     "debug": "^4.3.2",
@@ -22,5 +24,16 @@
     "ts-mocha": "^9.0.2",
     "ts-standard": "^11.0.0",
     "typescript": "^4.4.2"
-  }
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "evm",
+    "defi",
+    "smart contracts",
+    "dapp",
+    "dpack",
+    "dapptools",
+    "config"
+  ]
 }
