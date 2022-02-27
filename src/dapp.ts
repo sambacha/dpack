@@ -1,5 +1,5 @@
-import { need } from './util'
 import { getIpfsJson } from './ipfs-util'
+import { need } from './util'
 
 const debug = require('debug')('dpack')
 const default_ethers = require('ethers')
@@ -38,7 +38,8 @@ export class Dapp {
       instance.typename = obj.typename
       instance.artifact = obj.artifact
       dapp._objects[key] = instance
-      need(dapp[key] == undefined, 'Panic: name collision on dapp object.')
+      need(dapp[key] == undefined, 'Panic: name collision on dapp object.');
+      debug(`PANIC: name collision on dapp object.`);
       dapp[key] = instance
     }
 

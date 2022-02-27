@@ -1,6 +1,9 @@
-import { copy, need, omap } from './util'
-import { Artifact, TypeInfo, ObjectInfo, DPack, ResolvedPack } from './types'
+// @ts-ignore
+
 import * as schema from './schema'
+
+import { Artifact, DPack, ObjectInfo, ResolvedPack, TypeInfo } from './types'
+import { copy, need, omap } from './util'
 
 export { schema }
 

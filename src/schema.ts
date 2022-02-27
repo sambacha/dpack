@@ -1,4 +1,4 @@
-const Ajv = require('ajv') // = require('ajv/dist/jtd')
+import Ajv = require('ajv') // = require('ajv/dist/jtd')
 const ajv = Ajv()
 
 const linkSchema = {

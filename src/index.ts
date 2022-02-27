@@ -1,7 +1,8 @@
-import { PackBuilder } from './src/builder'
-import { Dapp } from './src/dapp'
-import { getIpfsJson, putIpfsJson, isCid } from './src/ipfs-util'
-import { need } from './src/util'
+import { getIpfsJson, isCid, putIpfsJson } from './ipfs-util'
+
+import { Dapp } from './dapp'
+import { PackBuilder } from './builder'
+import { need } from './util'
 
 export const load = async (arg, ethers = undefined) => {
   if (typeof arg === 'string') {
@@ -13,3 +14,6 @@ export const load = async (arg, ethers = undefined) => {
 export const builder = (network) => new PackBuilder(network)
 
 export { PackBuilder, Dapp, getIpfsJson, putIpfsJson }
+
+export * from './types'
+export * from './schema'
