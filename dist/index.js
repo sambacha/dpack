@@ -27,6 +27,13 @@ function omap(x, f) {
   return out;
 }
 
+var util = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  copy: copy,
+  need: need,
+  omap: omap
+});
+
 const debug$2 = require("debug")("dpack");
 const IPFS = require("ipfs-http-client");
 const nodeAddress = process.env.IPFS_RPC_URL ?? "/ip4/127.0.0.1/tcp/5001";
@@ -146,13 +153,24 @@ const resolvedPackSchema = {
     bundleSchema
   }
 };
-ajv.compile(linkSchema);
+const isWellFormedLink = ajv.compile(linkSchema);
 const isWellFormedObject = ajv.compile(objectSchema);
 const isWellFormedType = ajv.compile(typeSchema);
 const isWellFormedPack = ajv.compile(packSchema);
-ajv.compile(bundleSchema);
-ajv.compile(artifactSchema);
-ajv.compile(resolvedPackSchema);
+const isWellFormedBundle = ajv.compile(bundleSchema);
+const isWellFormedArtifact = ajv.compile(artifactSchema);
+const isWellFormedResolvedPack = ajv.compile(resolvedPackSchema);
+
+var schema = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  isWellFormedLink: isWellFormedLink,
+  isWellFormedObject: isWellFormedObject,
+  isWellFormedType: isWellFormedType,
+  isWellFormedPack: isWellFormedPack,
+  isWellFormedBundle: isWellFormedBundle,
+  isWellFormedArtifact: isWellFormedArtifact,
+  isWellFormedResolvedPack: isWellFormedResolvedPack
+});
 
 function assertValidPack(p) {
   need(isWellFormedPack(p), `dpack.assertValidPack(): pack fails schema validation: ${isWellFormedPack.errors}`);
@@ -172,6 +190,9 @@ function assertValidType(t) {
 }
 function assertValidObject(o) {
   need(isWellFormedObject(o), `dpack.assertValidObject() - not well formed object: ${o}`);
+}
+function assertValidArtifact(a) {
+  need(isWellFormedArtifact(a), `dpack.assertValidArtifact() - not well formed artifact: ${a}`);
 }
 function addType(pack, type) {
   assertValidPack(pack);
@@ -221,6 +242,42 @@ function blank(network) {
   assertValidPack(pack);
   return pack;
 }
+async function resolve(pack, ipfs = void 0) {
+  async function _resolve(link) {
+    need(link, "panic: bad DAG-JSON link");
+    need(link["/"], "panic: bad DAG-JSON link");
+    return await ipfs.getIpfsJson(link["/"]);
+  }
+  assertValidPack(pack);
+  const out = copy(pack);
+  out._bundle = {};
+  for (const key of Object.keys(this.types)) {
+    out._bundle[key] = await _resolve(this.types[key].artifact);
+  }
+  for (const key of Object.keys(this.objects)) {
+    out._bundle[key] = await _resolve(this.objects[key].artifact);
+  }
+  return await Promise.resolve(out);
+}
+function fromObject(obj) {
+  assertValidPack(obj);
+  return obj;
+}
+
+var pure = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  schema: schema,
+  assertValidPack: assertValidPack,
+  assertValidType: assertValidType,
+  assertValidObject: assertValidObject,
+  assertValidArtifact: assertValidArtifact,
+  addType: addType,
+  addObject: addObject,
+  merge: merge,
+  blank: blank,
+  resolve: resolve,
+  fromObject: fromObject
+});
 
 const debug$1 = require("debug")("DPack:builder");
 class PackBuilder {
@@ -272,6 +329,11 @@ class PackBuilder {
   }
 }
 
+var builder$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  PackBuilder: PackBuilder
+});
+
 const debug = require("debug")("dpack");
 class Dapp {
   constructor() {
@@ -313,6 +375,10 @@ class Dapp {
   }
 }
 
+var types = /*#__PURE__*/Object.freeze({
+  __proto__: null
+});
+
 const load = async (arg, _ethers = void 0, _signer = void 0) => {
   if (typeof arg === "string") {
     arg = isCid(arg) ? await getIpfsJson(arg) : require(arg);
@@ -322,9 +388,14 @@ const load = async (arg, _ethers = void 0, _signer = void 0) => {
 };
 const builder = (network) => new PackBuilder(network);
 
+exports.Builder = builder$1;
 exports.Dapp = Dapp;
 exports.IpfsUtil = ipfsUtil;
 exports.PackBuilder = PackBuilder;
+exports.Pure = pure;
+exports.Schema = schema;
+exports.Types = types;
+exports.Util = util;
 exports.builder = builder;
 exports.getIpfsJson = getIpfsJson;
 exports.isCid = isCid;
