@@ -1,5 +1,5 @@
-const Ajv = require('ajv') // = require('ajv/dist/jtd')
-const ajv = Ajv()
+import Ajv from 'ajv' // = require('ajv/dist/jtd')
+const ajv = new Ajv()
 
 const linkSchema = {
   properties: {
@@ -67,6 +67,17 @@ const resolvedPackSchema = {
   }
 }
 
+/**
+ * @export const isWellFormedLink
+ * @export const isWellFormedObject
+ * @export const isWellFormedType
+ * @export const isWellFormedPack
+ * @export const isWellFormedArtifact
+ * @export const isWellFormedResolvedPack
+ * @export const isWellFormedBundle
+ * @export const isWellFormedArtifact
+ * @export const isWellFormedArtifact
+ */
 export const isWellFormedLink = ajv.compile(linkSchema)
 export const isWellFormedObject = ajv.compile(objectSchema)
 export const isWellFormedType = ajv.compile(typeSchema)

@@ -12,8 +12,8 @@ export function assertValidPack (p: DPack): void {
   need(p.format === 'dpack-1',
     `dpack.assertValidPack() - unrecognized 'format' field: ${p.format}`
   )
-  omap(p.objects, (o) => { assertValidObject(o); return o })
-  omap(p.types, (t) => { assertValidType(t); return t })
+  omap(p.objects, (o: ObjectInfo) => { assertValidObject(o); return o })
+  omap(p.types, (t: TypeInfo) => { assertValidType(t); return t })
 }
 
 export function assertValidType (t: TypeInfo): void {
@@ -94,8 +94,8 @@ export function blank (network: string): DPack {
   return pack
 }
 
-export async function resolve (pack: DPack, ipfs: any = undefined): Promise<ResolvedPack> {
-  async function _resolve (link): Promise<any> {
+export async function resolve (this: any, pack: DPack, ipfs: any = undefined): Promise<ResolvedPack> {
+  async function _resolve (link: { [x: string]: any }): Promise<any> {
     need(link, 'panic: bad DAG-JSON link')
     need(link['/'], 'panic: bad DAG-JSON link')
     return await ipfs.getIpfsJson(link['/'])

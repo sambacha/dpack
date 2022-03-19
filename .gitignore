@@ -1,4 +1,7 @@
 .env
 node_modules
-
+cache/
+coverage/
+.nyc*
 *.swp
+.DS_Store

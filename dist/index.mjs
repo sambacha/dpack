@@ -1,14 +1,5 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var Ajv = require('ajv');
-var default_ethers = require('ethers');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var Ajv__default = /*#__PURE__*/_interopDefaultLegacy(Ajv);
-var default_ethers__default = /*#__PURE__*/_interopDefaultLegacy(default_ethers);
+import Ajv from 'ajv';
+import default_ethers from 'ethers';
 
 const v8 = require("v8");
 function copy(a) {
@@ -86,7 +77,7 @@ var ipfsUtil = /*#__PURE__*/Object.freeze({
   isCid: isCid
 });
 
-const ajv = new Ajv__default["default"]();
+const ajv = new Ajv();
 const linkSchema = {
   properties: {
     "/": { type: "string" }
@@ -281,7 +272,7 @@ class Dapp {
     dapp._objects = {};
     dapp._types = {};
     dapp._pack = pack;
-    dapp._ethers = _ethers ?? default_ethers__default["default"];
+    dapp._ethers = _ethers ?? default_ethers;
     const signer = _signer ?? dapp._ethers.Wallet.createRandom();
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key];
@@ -322,12 +313,5 @@ const load = async (arg, _ethers = void 0, _signer = void 0) => {
 };
 const builder = (network) => new PackBuilder(network);
 
-exports.Dapp = Dapp;
-exports.IpfsUtil = ipfsUtil;
-exports.PackBuilder = PackBuilder;
-exports.builder = builder;
-exports.getIpfsJson = getIpfsJson;
-exports.isCid = isCid;
-exports.load = load;
-exports.putIpfsJson = putIpfsJson;
-//# sourceMappingURL=index.js.map
+export { Dapp, ipfsUtil as IpfsUtil, PackBuilder, builder, getIpfsJson, isCid, load, putIpfsJson };
+//# sourceMappingURL=index.mjs.map

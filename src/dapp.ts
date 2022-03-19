@@ -1,14 +1,15 @@
 import { need } from './util'
 import { getIpfsJson } from './ipfs-util'
+import default_ethers from 'ethers'
 
 const debug = require('debug')('dpack')
-const default_ethers = require('ethers')
 
 export class Dapp {
   _ethers: any
   _pack: any
   _objects: any
   _types: any
+  weth: any
 
   private constructor () {}
   static async loadFromPack (pack: any, _ethers: any = undefined, _signer: any = undefined): Promise<Dapp> {
@@ -18,7 +19,7 @@ export class Dapp {
     dapp._types = {}
     dapp._pack = pack
     dapp._ethers = _ethers ?? default_ethers
-    let signer = _signer ?? dapp._ethers.Wallet.createRandom()
+    const signer = _signer ?? dapp._ethers.Wallet.createRandom()
 
     for (const key of Object.keys(dapp._pack.objects)) {
       const obj = dapp._pack.objects[key]
@@ -32,8 +33,11 @@ export class Dapp {
       instance.typename = obj.typename
       instance.artifact = obj.artifact
       dapp._objects[key] = instance
-      need(dapp[key] == undefined, 'Panic: name collision on dapp object.')
-      dapp[key] = instance
+      // type key = /*unresolved*/ any
+      need(dapp as unknown as [typeof key] === undefined, 'Panic: name collision on dapp object.')
+
+      debug('#[debug] dapp._objects[key] = instance')
+      dapp as unknown as [typeof key]; instance
     }
 
     for (const key of Object.keys(dapp._pack.types)) {
