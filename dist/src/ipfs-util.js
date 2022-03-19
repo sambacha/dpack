@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -15,13 +16,15 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isCid = exports.isV0CID = exports.pinIpfsCid = exports.putIpfsJson = exports.getIpfsJson = void 0;
 const debug = require('debug')('dpack');
 const IPFS = require('ipfs-http-client');
 const nodeAddress = (_a = process.env.IPFS_RPC_URL) !== null && _a !== void 0 ? _a : '/ip4/127.0.0.1/tcp/5001';
 debug(`starting node ${nodeAddress}`);
 const node = IPFS.create(nodeAddress);
 debug('started node');
-export function getIpfsJson(cid) {
+function getIpfsJson(cid) {
     var e_1, _a;
     return __awaiter(this, void 0, void 0, function* () {
         if (isV0CID(cid)) {
@@ -48,7 +51,8 @@ Please repack the pack containing ${cid}
         return JSON.parse(s);
     });
 }
-export function putIpfsJson(obj, pin = false) {
+exports.getIpfsJson = getIpfsJson;
+function putIpfsJson(obj, pin = false) {
     return __awaiter(this, void 0, void 0, function* () {
         const str = JSON.stringify(obj);
         debug(`adding ${str}`);
@@ -58,7 +62,8 @@ export function putIpfsJson(obj, pin = false) {
         return cid.toString();
     });
 }
-export function pinIpfsCid(cid) {
+exports.putIpfsJson = putIpfsJson;
+function pinIpfsCid(cid) {
     return __awaiter(this, void 0, void 0, function* () {
         if (isV0CID(cid)) {
             console.warn(`
@@ -70,6 +75,7 @@ Please repack the pack containing ${cid}
         debug(`pinned ${cid}`);
     });
 }
+exports.pinIpfsCid = pinIpfsCid;
 /**
  *
  * @function isV0CID
@@ -78,15 +84,16 @@ Please repack the pack containing ${cid}
  * @summary 'If a CID is 46 characters starting with "Qm", it's a CIDv0'
  * @see {@link  https://docs.ipfs.io/concepts/content-addressing/#identifier-formats}
  */
-export function isV0CID(cidStr) {
+function isV0CID(cidStr) {
     return (cidStr.length === 46 && cidStr.slice(0, 2) === 'Qm');
 }
+exports.isV0CID = isV0CID;
 /**
  * @function isCid
  * @param cidStr
  * @returns boolean
  */
-export function isCid(cidStr) {
+function isCid(cidStr) {
     try {
         IPFS.CID.parse(cidStr);
         return true;
@@ -95,3 +102,4 @@ export function isCid(cidStr) {
         return false;
     }
 }
+exports.isCid = isCid;

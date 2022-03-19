@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,41 +8,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { need, copy } from './util';
-import { putIpfsJson } from './ipfs-util';
-import { blank, merge as _merge, addType as _addType, addObject as _addObject, assertValidPack } from './pure';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PackBuilder = void 0;
+const util_1 = require("./util");
+const ipfs_util_1 = require("./ipfs-util");
+const pure_1 = require("./pure");
 const debug = require('debug')('DPack:builder');
-export class PackBuilder {
+class PackBuilder {
     constructor(network) {
-        need(network, 'new PackBuilder(network) - network must be defined');
+        (0, util_1.need)(network, 'new PackBuilder(network) - network must be defined');
         debug(`#[debug] new PackBuilder(${network})`);
-        need(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string');
-        need(network !== 'mainnet', 'You may not use \'mainnet\' as a network name. You might mean \'ethereum\'.');
-        need(network !== '', 'Network name cannot be empty.');
-        this._pack = blank(network);
-        assertValidPack(this._pack);
+        (0, util_1.need)(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string');
+        (0, util_1.need)(network !== 'mainnet', 'You may not use \'mainnet\' as a network name. You might mean \'ethereum\'.');
+        (0, util_1.need)(network !== '', 'Network name cannot be empty.');
+        this._pack = (0, pure_1.blank)(network);
+        (0, pure_1.assertValidPack)(this._pack);
     }
     packType(t) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cid = (yield putIpfsJson(t.artifact)).toString();
-            const info = copy(t);
+            const cid = (yield (0, ipfs_util_1.putIpfsJson)(t.artifact)).toString();
+            const info = (0, util_1.copy)(t);
             info.artifact = { '/': cid };
-            this._pack = _addType(this._pack, info);
+            this._pack = (0, pure_1.addType)(this._pack, info);
             return yield Promise.resolve(this);
         });
     }
     addType(t) {
-        this._pack = _addType(this._pack, t);
+        this._pack = (0, pure_1.addType)(this._pack, t);
         return this;
     }
     packObject(o, alsoPackType = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cid = (yield putIpfsJson(o.artifact)).toString();
-            const info = copy(o);
+            const cid = (yield (0, ipfs_util_1.putIpfsJson)(o.artifact)).toString();
+            const info = (0, util_1.copy)(o);
             info.artifact = { '/': cid };
-            let pack = _addObject(this._pack, info);
+            let pack = (0, pure_1.addObject)(this._pack, info);
             if (alsoPackType) {
-                pack = _addType(pack, {
+                pack = (0, pure_1.addType)(pack, {
                     typename: info.typename,
                     artifact: info.artifact
                 });
@@ -51,16 +54,17 @@ export class PackBuilder {
         });
     }
     addObject(o) {
-        this._pack = _addObject(this._pack, o);
+        this._pack = (0, pure_1.addObject)(this._pack, o);
         return this;
     }
     merge(...packs) {
-        this._pack = _merge(this._pack, ...packs);
+        this._pack = (0, pure_1.merge)(this._pack, ...packs);
         return this;
     }
     build() {
-        assertValidPack(this._pack);
-        return copy(this._pack);
+        (0, pure_1.assertValidPack)(this._pack);
+        return (0, util_1.copy)(this._pack);
     }
 }
+exports.PackBuilder = PackBuilder;
 ;
