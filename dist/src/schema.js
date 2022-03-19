@@ -1,23 +1,20 @@
-"use strict";
-exports.__esModule = true;
-exports.isWellFormedResolvedPack = exports.isWellFormedArtifact = exports.isWellFormedBundle = exports.isWellFormedPack = exports.isWellFormedType = exports.isWellFormedObject = exports.isWellFormedLink = void 0;
-var Ajv = require('ajv'); // = require('ajv/dist/jtd')
-var ajv = Ajv();
-var linkSchema = {
+import Ajv from 'ajv'; // = require('ajv/dist/jtd')
+const ajv = new Ajv();
+const linkSchema = {
     properties: {
         '/': { type: 'string' }
     }
 };
-var typeSchema = {
+const typeSchema = {
     properties: {
         typename: { type: 'string' },
         artifact: { ref: 'linkSchema' }
     },
     definitions: {
-        linkSchema: linkSchema
+        linkSchema
     }
 };
-var objectSchema = {
+const objectSchema = {
     properties: {
         objectname: { type: 'string' },
         address: { type: 'string' },
@@ -25,10 +22,10 @@ var objectSchema = {
         artifact: { ref: 'linkSchema' }
     },
     definitions: {
-        linkSchema: linkSchema
+        linkSchema
     }
 };
-var packSchema = {
+const packSchema = {
     properties: {
         format: { type: 'string' },
         network: { type: 'string' },
@@ -36,19 +33,19 @@ var packSchema = {
         objects: { values: { ref: 'objectSchema' } }
     },
     definitions: {
-        typeSchema: typeSchema,
-        objectSchema: objectSchema
+        typeSchema,
+        objectSchema
     }
 };
-var bundleSchema = {
+const bundleSchema = {
     values: { type: 'string' }
 };
-var artifactSchema = {
+const artifactSchema = {
     bytecode: { nullable: true },
     abi: { nullable: true },
     additionalProperties: true
 };
-var resolvedPackSchema = {
+const resolvedPackSchema = {
     properties: {
         format: { type: 'string' },
         network: { type: 'string' },
@@ -57,15 +54,26 @@ var resolvedPackSchema = {
         _bundle: { ref: 'bundleSchema' }
     },
     definitions: {
-        typeSchema: typeSchema,
-        objectSchema: objectSchema,
-        bundleSchema: bundleSchema
+        typeSchema,
+        objectSchema,
+        bundleSchema
     }
 };
-exports.isWellFormedLink = ajv.compile(linkSchema);
-exports.isWellFormedObject = ajv.compile(objectSchema);
-exports.isWellFormedType = ajv.compile(typeSchema);
-exports.isWellFormedPack = ajv.compile(packSchema);
-exports.isWellFormedBundle = ajv.compile(bundleSchema);
-exports.isWellFormedArtifact = ajv.compile(artifactSchema);
-exports.isWellFormedResolvedPack = ajv.compile(resolvedPackSchema);
+/**
+ * @export const isWellFormedLink
+ * @export const isWellFormedObject
+ * @export const isWellFormedType
+ * @export const isWellFormedPack
+ * @export const isWellFormedArtifact
+ * @export const isWellFormedResolvedPack
+ * @export const isWellFormedBundle
+ * @export const isWellFormedArtifact
+ * @export const isWellFormedArtifact
+ */
+export const isWellFormedLink = ajv.compile(linkSchema);
+export const isWellFormedObject = ajv.compile(objectSchema);
+export const isWellFormedType = ajv.compile(typeSchema);
+export const isWellFormedPack = ajv.compile(packSchema);
+export const isWellFormedBundle = ajv.compile(bundleSchema);
+export const isWellFormedArtifact = ajv.compile(artifactSchema);
+export const isWellFormedResolvedPack = ajv.compile(resolvedPackSchema);

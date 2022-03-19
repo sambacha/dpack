@@ -1,23 +1,36 @@
-"use strict";
-exports.__esModule = true;
-exports.omap = exports.need = exports.copy = void 0;
-var v8 = require('v8');
-function copy(a) {
+const v8 = require('v8');
+/**
+ * @exports copy
+ * @param a
+ * @returns
+ */
+export function copy(a) {
     return v8.deserialize(v8.serialize(a));
     //  return JSON.parse(JSON.stringify(a))
 }
-exports.copy = copy;
-function need(b, s) {
-    if (!b)
+/**
+ * @exports need
+ * @param b
+ * @param s
+ */
+export function need(b, s) {
+    if (!b != null && !s)
         throw new Error(s);
+    console.error('ERROR: need, b, s)`');
 }
-exports.need = need;
-function omap(o, f) {
-    var out = {};
-    for (var _i = 0, _a = Object.entries(o); _i < _a.length; _i++) {
-        var _b = _a[_i], k = _b[0], v = _b[1];
-        out[k] = f(v);
+/**
+ * omap - map over an object, returning a new object
+ * @exports omap
+ * @param {Object} obj
+ * @param {Function} keyMapFunction - Transform operation to apply on the key.
+ * @param {Function} [valueMapFunction] - Transform operation to apply on the value.
+ * @returns {Object} out
+ */
+export function omap(x, f) {
+    const out = {};
+    for (const k of Object.keys(x)) {
+        out[k] = f(x[k]);
     }
     return out;
 }
-exports.omap = omap;
+;
