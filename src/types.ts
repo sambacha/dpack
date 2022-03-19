@@ -1,8 +1,13 @@
+
+/** @type {string} base64str */
 export type base64str = string
+
+/** @export interface Bundle  */
 export interface Bundle {[cid: string]: any}
 
+/** @type {string} */
 export interface IpfsLink {
-  '/': string
+  '/': string // pattern: ^$|^[a-zA-Z_\\$][a-zA-Z_\\$0-9]*$
 }
 
 export interface TypeInfo {
@@ -24,6 +29,7 @@ export interface DPack {
   objects: {[objectname: string]: ObjectInfo}
 }
 
+/* eslint-disable @typescript-eslint/no-empty-interface */
 export interface Artifact {
 }
 

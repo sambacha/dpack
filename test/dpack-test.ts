@@ -1,3 +1,8 @@
+/** 
+ * @filename dpack-test.ts
+ * @test {Dpack}
+ */
+
 import { builder, load } from "../index"
 import { Dapp } from '../src/dapp';
 import { PackBuilder } from '../src/builder';
@@ -5,11 +10,11 @@ import { putIpfsJson } from "../src/ipfs-util"
 import * as pure from '../src/pure'
 
 const debug = require('debug')('dpack:test')
-const fs = require('fs')
-const samplepack= JSON.parse(fs.readFileSync('test/sample-pack.json'))
-const path = require('path');
+import fs from 'fs';
+const samplepack= JSON.parse(fs.readFileSync('./test/sample-pack.json', 'utf-8'));
+import path from 'path';
 const want = require('chai').expect
-const ethers = require('ethers')
+import ethers from 'ethers';
 
 let signer
 before(async () => {
@@ -26,6 +31,7 @@ describe('end to end simple example', ()=>{
 
     // After compiling and deploying a contract we have the contract.address and json artifact containing the ABI and
     // bytecode. These are used to create a pack:
+    // @ts-ignore
     const pb = new builder('ropsten');
     await pb.packObject({
       objectname: 'weth',
@@ -71,12 +77,12 @@ describe('pure api', async ()=>{
     want(p.objects).exists;
     want(p.types).exists;
   })
-/* this hangs the test suite for some reason. was just checking the v0 warning gets printed
+/* this hangs the test suite for some reason. was just checking the v0 warning gets printed   */
   it('sample pack', async ()=>{
     const pack = await load(samplepack)
     want(pure.schema.isWellFormedPack(pack)).true
   })
-  */
+
 });
 
 describe('PackBuilder', ()=>{

@@ -15,6 +15,7 @@ export class PackBuilder {
   _pack: DPack
   constructor (network: string) {
     need(network, 'new PackBuilder(network) - network must be defined')
+    debug(`#[debug] new PackBuilder(${network})`)
     need(typeof (network) === 'string', 'new PackBuilder(network) - network must be a string')
     need(network !== 'mainnet', 'You may not use \'mainnet\' as a network name. You might mean \'ethereum\'.')
     need(network !== '', 'Network name cannot be empty.')
@@ -65,4 +66,4 @@ export class PackBuilder {
     assertValidPack(this._pack)
     return copy(this._pack)
   }
-}
+};
