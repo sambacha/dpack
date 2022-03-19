@@ -2,7 +2,7 @@
  * @package dpack
  * @description A package for deploying smart contracts.
  * @author nikolai mushegia
- * @see https://github.com/dapphub/dpack
+ * @see {@link https://github.com/dapphub/dpack}
  */
 
 import { PackBuilder } from './src/builder'
@@ -10,6 +10,12 @@ import { Dapp } from './src/dapp'
 import { getIpfsJson, putIpfsJson, isCid } from './src/ipfs-util'
 import { need } from './src/util'
 import * as IpfsUtil from './src/ipfs-util'
+
+import * as Builder from './src/builder';
+import * as Pure from './src/pure';
+import * as Schema from './src/schema';
+import * as Types from './src/types';
+import * as Util from './src/util';
 
 export const load = async (arg: string, _ethers = undefined, _signer = undefined) => {
   if (typeof arg === 'string') {
@@ -21,4 +27,4 @@ export const load = async (arg: string, _ethers = undefined, _signer = undefined
 
 export const builder = (network: string) => new PackBuilder(network)
 
-export { PackBuilder, Dapp, getIpfsJson, putIpfsJson, IpfsUtil, isCid }
+export { PackBuilder, Dapp, getIpfsJson, putIpfsJson, IpfsUtil, isCid, Builder, Pure, Schema, Types, Util };
