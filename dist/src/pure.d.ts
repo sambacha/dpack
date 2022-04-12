@@ -1,0 +1,13 @@
+import { Artifact, TypeInfo, ObjectInfo, DPack, ResolvedPack } from './types';
+import * as schema from './schema';
+export { schema };
+export declare function assertValidPack(p: DPack): void;
+export declare function assertValidType(t: TypeInfo): void;
+export declare function assertValidObject(o: ObjectInfo): void;
+export declare function assertValidArtifact(a: Artifact): void;
+export declare function addType(pack: DPack, type: TypeInfo): DPack;
+export declare function addObject(pack: DPack, obj: any): DPack;
+export declare function merge(...packs: DPack[]): DPack;
+export declare function blank(network: string): DPack;
+export declare function resolve(pack: DPack, ipfs?: any): Promise<ResolvedPack>;
+export declare function fromObject(obj: any): DPack;

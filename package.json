@@ -3,9 +3,15 @@
   "version": "0.0.29",
   "author": "nikolai mushegian <mail@nikolai.fyi>",
   "license": "GPL-3.0",
-  "main": "./dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc --build --clean && tsc",
+    "build": "rollup -c --context this",
+    "compile": "tsc --build --clean && tsc",
     "test": "npm run build && ts-mocha test/*.ts --timeout=10000",
     "fmt": "ts-standard --fix src index.ts"
   },
@@ -17,10 +23,19 @@
     "multiformats": "^9.6.4"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.3",
+    "@rollup/plugin-node-resolve": "^13.2.0",
     "@types/mocha": "^9.1.0",
     "chai": "^4.3.4",
+    "esbuild": "^0.14.36",
+    "rollup": "^2.70.1",
+    "rollup-plugin-dts": "^4.2.1",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.31.2",
     "ts-mocha": "^9.0.2",
     "ts-standard": "^11.0.0",
-    "typescript": "^4.4.2"
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.3"
   }
 }
