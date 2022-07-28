@@ -1,0 +1,85 @@
+{
+  "id": "dpack.spec.json",
+  "$schema": "http://json-schema.org/schema#",
+  "title": "dpack-1",
+  "version": {
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  },
+  "timestamp": "2021-01-01T13:12:00.000+00:00",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      { "$ref": "#/definitions/linkSchema" },
+      { "$ref": "#/definitions/typeSchema" },
+      { "$ref": "#/definitions/objectSchema" },
+      { "$ref": "#/definitions/packSchema" },
+      { "$ref": "#/definitions/bundleSchema" },
+      { "$ref": "#/definitions/artifactSchema" },
+      { "$ref": "#/definitions/resolvedPackSchema" }
+    ]
+  },
+  "SchemaVersion": {
+    "type": "string",
+    "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+"
+  },
+  "linkSchema": {
+    "properties": {
+      "/": {
+        "type": "string",
+        "pattern": "^$|^[a-zA-Z_\\$][a-zA-Z_\\$0-9]*$"
+      }
+    }
+  },
+  "typeSchema": {
+    "properties": {
+      "typename": { "type": "string" },
+      "artifact": { "ref": "linkSchema" }
+    },
+    "definitions": ["linkSchema"]
+  },
+  "objectSchema": {
+    "properties": {
+      "objectname": { "type": "string" },
+      "address": {
+        "type": "string",
+        "pattern": "^0x[a-fA-F0-9]{40}$"
+      },
+      "typename": { "type": "string" },
+      "artifact": { "ref": "linkSchema" }
+    },
+    "definitions": ["linkSchema"]
+  },
+  "packSchema": {
+    "properties": {
+      "format": { "type": "string" },
+      "network": { "type": "string" },
+      "types": { "values": { "ref": "typeSchema" } },
+      "objects": { "values": { "ref": "objectSchema" } }
+    },
+    "definitions": ["typeSchema", "objectSchema"]
+  },
+  "bundleSchema": {
+    "values": { "type": "string" }
+  },
+  "artifactSchema": {
+    "bytecode": {
+      "type": "string",
+      "pattern": "^0x0?$|^0x([a-fA-F0-9]{2}|__.{38})+$",
+      "nullable": "true"
+    },
+    "abi": { "nullable": "true" },
+    "additionalProperties": "true"
+  },
+  "resolvedPackSchema": {
+    "properties": {
+      "format": { "type": "string" },
+      "network": { "type": "string" },
+      "types": { "values": { "ref": "typeSchema" } },
+      "objects": { "values": { "ref": "objectSchema" } },
+      "_bundle": { "ref": "bundleSchema" }
+    },
+    "definitions": ["typeSchema", "objectSchema", "bundleSchema"]
+  }
+}
